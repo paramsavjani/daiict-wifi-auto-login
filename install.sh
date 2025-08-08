@@ -70,3 +70,4 @@ systemctl enable wifi-login.service
 systemctl enable wifi-logout.service
 
 echo "✅ Setup complete!"
+echo "Please Reboot your system for the changes to take effect."
