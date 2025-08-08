@@ -20,6 +20,13 @@ It uses `systemd` services to detect your connection and handle authentication a
 - `requests` Python package
 
 Install `requests` if needed:
+If you are using **Arch Linux** or a derivative, install `requests` with:
+
+```bash
+sudo pacman -S python-requests
+```
+
+otherwise,
 
 ```bash
 sudo apt update
@@ -34,7 +41,7 @@ pip3 install requests
 Clone the repository:
 
 ```bash
-git clone httphttps://github.com/paramsavjani/daiict-wifi-auto-login.git
+git clone https://github.com/paramsavjani/daiict-wifi-auto-login.git
 cd daiict-wifi-auto-login
 ```
 
@@ -75,25 +82,6 @@ Manually trigger logout:
 ```bash
 sudo wifi-logout
 ```
-
----
-
-## 🔄 Uninstallation
-
-If you want to remove the auto-login setup completely:
-
-```bash
-sudo systemctl disable wifi-login.service
-sudo systemctl disable wifi-logout.service
-sudo rm /etc/systemd/system/wifi-login.service
-sudo rm /etc/systemd/system/wifi-logout.service
-sudo rm -f /usr/local/bin/login.py /usr/local/bin/logout.py
-sudo rm -f /usr/local/bin/wifi-login /usr/local/bin/wifi-logout
-sudo rm -rf /etc/wifi-auth
-sudo systemctl daemon-reload
-echo "✅ Auto-login and logout setup removed."
-```
-
 ---
 
 ## ⚠️ Security Notes
