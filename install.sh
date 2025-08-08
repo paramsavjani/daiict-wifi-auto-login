@@ -70,4 +70,4 @@ systemctl enable wifi-login.service
 systemctl enable wifi-logout.service
 
 echo "✅ Setup complete!"
-echo "Please Reboot your system for the changes to take effect."
+echo "Please restart your system to apply the changes. Ensure that 'DA_Public' is set to auto-connect in your Wi-Fi settings."
