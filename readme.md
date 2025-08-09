@@ -55,7 +55,7 @@ cd daiict-wifi-auto-login
 Run the setup:
 
 ```bash
-sudo ./install.sh
+sudo bash install.sh
 ```
 
 During setup:  
