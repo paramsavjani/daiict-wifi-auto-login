@@ -10,21 +10,23 @@ cat <<'EOF' > /usr/local/bin/wifi-keepalive.py
 #!/usr/bin/env python3
 import requests
 import time
+import warnings
+warnings.filterwarnings("ignore")
+
+BASE_URL = "https://dafirewall.daiict.ac.in:8090/live?mode=192&username={}&a={}&producttype=0"
 
 with open("/etc/wifi-auth/credentials.txt") as f:
     username, password = [line.strip() for line in f.readlines()]
-
-BASE_URL = "https://dafirewall.daiict.ac.in:8090/live?mode=192&username={}&a={}&producttype=0"
 
 while True:
     ts = int(time.time() * 1000)
     url = BASE_URL.format(username, ts)
     try:
-        r = requests.get(url, timeout=10)
-        print(f"[KeepAlive] Sent {url} -> {r.status_code}")
+        requests.get(url, timeout=10, verify=False)
     except Exception as e:
-        print(f"[KeepAlive] Failed: {e}")
+        pass
     time.sleep(60)
+
 EOF
 
 chmod +x /usr/local/bin/wifi-keepalive.py
