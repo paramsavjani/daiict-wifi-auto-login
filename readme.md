@@ -1,32 +1,39 @@
-# 📡 DA_Public Wi-Fi Auto Login & Logout
+# 📡 DA_Public Wi-Fi Auto Login & Logout  
 
-This project automates **login** and **logout** for the `DA_Public` Wi-Fi network at DA-IICT.  
-It uses `systemd` services to detect your connection and handle authentication automatically.
+**Automated login & logout for DA-IICT’s `DA_Public` Wi-Fi** using Python + systemd.  
+
+![License](https://img.shields.io/badge/License-MIT-blue.svg)  
+![OS](https://img.shields.io/badge/OS-Linux-green.svg)  
+![Python](https://img.shields.io/badge/Python-3.x-yellow.svg)  
+
+---
 
 ## ✨ Features
 
-- 🔑 Securely stores your Wi-Fi credentials
-- ⚡ Automatically logs in when connected to `DA_Public`
-- 🔒 Automatically logs out when shutting down or restarting
-- 🛠 Easy installation with one command
+- 🔑 **Secure credential storage** — your username & password are stored with root-only permissions.  
+- ⚡ **Automatic login** when connected to `DA_Public`.  
+- 🔒 **Automatic logout** during shutdown/reboot.  
+- 🛠 **Simple one-command installation**.  
+- 📶 Works silently in the background using **systemd services**.  
 
 ---
 
 ## 📋 Requirements
 
-- Linux system (tested on Ubuntu/Pop!_OS)
-- Python 3 installed
-- `nmcli` installed (comes with NetworkManager)
-- `requests` Python package
+- Linux (tested on **Ubuntu**, **Pop!_OS**, and **Arch Linux**).  
+- Python 3 installed.  
+- `nmcli` (comes with NetworkManager).  
+- `requests` Python package.
 
-Install `requests` if needed:
-If you are using **Arch Linux** or a derivative, install `requests` with:
+**Install `requests`:**  
+
+For **Arch Linux**:  
 
 ```bash
 sudo pacman -S python-requests
 ```
 
-otherwise,
+For **Debian/Ubuntu**:  
 
 ```bash
 sudo apt update
@@ -45,63 +52,68 @@ git clone https://github.com/paramsavjani/daiict-wifi-auto-login.git
 cd daiict-wifi-auto-login
 ```
 
-Run the setup script:
+Run the setup:
 
 ```bash
 sudo ./install.sh
 ```
 
-During setup:
+During setup:  
 
-- You will be asked to **enter your college Wi-Fi username and password**.
-- Scripts and services will be installed.
-- `DA_Public` should be set to **auto-connect** in your system Wi-Fi settings.
+- Enter your **Wi-Fi username & password**.  
+- Scripts & services will be installed.  
+- Ensure `DA_Public` is set to **auto-connect** in your system Wi-Fi settings.
 
 ---
 
 ## 🛠 How It Works
 
-1. **`login.py`** — Logs in to `DA_Public` when connected.
-2. **`logout.py`** — Logs out from `DA_Public` before shutdown/reboot.
-3. **`wifi-login.service`** — Runs login script after network connection.
-4. **`wifi-logout.service`** — Runs logout script before shutdown.
-5. Credentials are stored in `/etc/wifi-auth/credentials.txt` (root-only access).
+| File / Service            | Purpose |
+|---------------------------|---------|
+| `login.py`               | Logs into DA_Public on connect |
+| `logout.py`              | Logs out before shutdown/reboot |
+| `wifi-login.service`     | Runs login script after network connection |
+| `wifi-logout.service`    | Runs logout script before shutdown |
+| `/etc/wifi-auth/credentials.txt` | Stores encrypted credentials (root-only access) |
 
 ---
 
 ## ▶️ Usage
 
-Manually trigger login:
+Manually log in:
 
 ```bash
 sudo wifi-login
 ```
 
-Manually trigger logout:
+Manually log out:
 
 ```bash
 sudo wifi-logout
 ```
+
 ---
 
 ## ⚠️ Security Notes
 
-- Your credentials are stored in `/etc/wifi-auth/credentials.txt` with `chmod 600` (accessible only by root).
-- The connection uses HTTPS, but SSL verification is disabled due to DA_Public's self-signed certificate.
+- Credentials are stored in `/etc/wifi-auth/credentials.txt` with `chmod 600`.  
+- Connection uses HTTPS, but SSL verification is disabled due to DA_Public’s **self-signed certificate**.  
 
 ---
 
 ## 📜 License
 
-This project is open source under the MIT License.  
-Feel free to modify and share — but use at your own risk.
+Licensed under the [MIT License](LICENSE).  
+Use at your own risk.
 
 ---
 
 ## 🙌 Contributions
 
-Pull requests are welcome!  
-You can help by:
+You can help by:  
 
-- Improving the login/logout scripts
-- Making cross-platform installers
+- Improving login/logout scripts.  
+- Adding cross-platform support.  
+- Enhancing security & speed.
+
+Pull requests welcome! 🚀
