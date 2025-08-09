@@ -24,7 +24,7 @@ while True:
         print(f"[KeepAlive] Sent {url} -> {r.status_code}")
     except Exception as e:
         print(f"[KeepAlive] Failed: {e}")
-    time.sleep(300)
+    time.sleep(60)
 EOF
 
 chmod +x /usr/local/bin/wifi-keepalive.py
