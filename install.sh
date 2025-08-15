@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+if [ "$EUID" -ne 0 ]; then
+  echo "❌ Please run as root (use sudo)"
+  exit 1
+fi
+
 echo "n" | bash uninstall.sh &> /dev/null
 bash credentials_setup.sh
 bash copy_scripts.sh
