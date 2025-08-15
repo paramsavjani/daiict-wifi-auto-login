@@ -6,7 +6,6 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-/usr/local/bin/wifi-logout
 echo "🛑 Stopping and disabling services..."
 systemctl stop wifi-login.service || true
 systemctl stop wifi-logout.service || true
@@ -27,8 +26,19 @@ rm -f /usr/local/bin/login.py
 rm -f /usr/local/bin/logout.py
 rm -f /usr/local/bin/wifi-keepalive.py
 
-echo "🗑 Removing saved credentials..."
-rm -rf /etc/wifi-auth
+
+if [ -d /etc/wifi-auth ]; then
+    read -p "Do you also want to remove saved WiFi username and password? (y/N): " choice
+    case "$choice" in
+        [yY]|[yY][eE][sS])
+            echo "🗑 Removing saved credentials..."
+            rm -rf /etc/wifi-auth
+            ;;
+        *)
+            echo "🔒 Saved credentials kept."
+            ;;
+    esac
+fi
 
 echo "🔄 Reloading systemd..."
 systemctl daemon-reload

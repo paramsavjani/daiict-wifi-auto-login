@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+echo "n" | bash uninstall.sh &> /dev/null
 bash credentials_setup.sh
 bash copy_scripts.sh
 bash create_wrappers.sh

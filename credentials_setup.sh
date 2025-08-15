@@ -6,11 +6,31 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-read -p "Enter your college WiFi username: " USERNAME
-read -s -p "Enter your password: " PASSWORD
-echo
+CRED_FILE="/etc/wifi-auth/credentials.txt"
 
-mkdir -p /etc/wifi-auth
-echo -e "$USERNAME\n$PASSWORD" > /etc/wifi-auth/credentials.txt
-chmod 600 /etc/wifi-auth/credentials.txt
-echo "🔑 Credentials saved."
+if [ -f "$CRED_FILE" ]; then
+  echo "✅ Credentials already exist."
+  read -p "Do you want to use the existing credentials? (y/N): " choice
+  case "$choice" in
+    [yY]|[yY][eE][sS])
+      echo "🔒 Using existing credentials."
+      ;;
+    *)
+      read -p "Enter your college WiFi username: " USERNAME
+      read -s -p "Enter your password: " PASSWORD
+      echo
+      mkdir -p /etc/wifi-auth
+      echo -e "$USERNAME\n$PASSWORD" > "$CRED_FILE"
+      chmod 600 "$CRED_FILE"
+      echo "🔑 Credentials updated."
+      ;;
+  esac
+else
+  read -p "Enter your college WiFi username: " USERNAME
+  read -s -p "Enter your password: " PASSWORD
+  echo
+  mkdir -p /etc/wifi-auth
+  echo -e "$USERNAME\n$PASSWORD" > "$CRED_FILE"
+  chmod 600 "$CRED_FILE"
+  echo "🔑 Credentials saved."
+fi
