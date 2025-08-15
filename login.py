@@ -38,12 +38,14 @@ def notify_user(title, message):
 
         subprocess.run(
             ["sudo", "-u", user, "env",
-             f"DBUS_SESSION_BUS_ADDRESS={dbus_addr}",
-             "DISPLAY=:0",
-             "notify-send", title, message],
-            check=False
-        )
-
+            f"DBUS_SESSION_BUS_ADDRESS={dbus_addr}",
+            "DISPLAY=:0",
+            "notify-send",
+            "--icon=network-wireless",         
+            title,
+            message],
+            check=False)
+    
     except Exception as e:
         pass
 
