@@ -20,4 +20,3 @@ sys.exit(do_logout(username))
 EOF
 
 chmod +x /usr/local/bin/wifi-login /usr/local/bin/wifi-logout
-echo "⚙️ Wrapper scripts created."

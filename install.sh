@@ -51,8 +51,8 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-systemctl enable wifi-keepalive.service
-systemctl start wifi-keepalive.service
+systemctl enable wifi-keepalive.service >/dev/null 2>&1
+systemctl start wifi-keepalive.service >/dev/null 2>&1
 
 echo "✅ Setup complete!"
 echo "🔄 Running initial login..."

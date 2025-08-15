@@ -30,7 +30,6 @@ RemainAfterExit=true
 WantedBy=halt.target poweroff.target reboot.target shutdown.target
 EOF
 
-systemctl daemon-reload
-systemctl enable wifi-login.service
-systemctl enable wifi-logout.service
-echo "🛠️ Services created and enabled."
+systemctl daemon-reload >/dev/null 2>&1
+systemctl enable wifi-login.service >/dev/null 2>&1
+systemctl enable wifi-logout.service >/dev/null 2>&1
