@@ -26,7 +26,6 @@ def get_connected_wifi():
 
 
 def parse_message(xml_data, username):
-    """Extract the <message> text from the XML response and replace {username}."""
     try:
         root = ET.fromstring(xml_data)
         message = root.find("message").text
