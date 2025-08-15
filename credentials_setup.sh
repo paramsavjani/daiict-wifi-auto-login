@@ -9,8 +9,9 @@ fi
 CRED_FILE="/etc/wifi-auth/credentials.txt"
 
 if [ -f "$CRED_FILE" ]; then
+  OLD_USERNAME=$(head -n 1 "$CRED_FILE")
   echo "✅ Credentials already exist."
-  read -p "Do you want to use the existing credentials? (y/N): " choice
+  read -p "Do you want to use the existing credentials for $OLD_USERNAME? (y/N): " choice
   case "$choice" in
     [yY]|[yY][eE][sS])
       echo "🔒 Using existing credentials."

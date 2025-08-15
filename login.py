@@ -31,7 +31,10 @@ def parse_message(xml_data, username):
         root = ET.fromstring(xml_data)
         message = root.find("message").text
         if message:
-            return message.replace("{username}", username).strip()
+            if message.startswith('You are signed'):
+                return f"\033[1;32m{message.replace('{username}', username).strip()}\033[0m"
+            else:
+                return f"\033[1;31m{message.replace('{username}', username).strip()}\033[0m"
         else:
             return "No message in response."
     except Exception:
