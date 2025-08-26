@@ -78,7 +78,7 @@ cat <<EOF > "$DESKTOP_FILE"
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=WiFi Login
+Name=WiFi Logout
 Comment=Run wifi-logout
 Exec=/usr/local/bin/wifi-logout >/dev/null 2>&1 &
 Icon=network-wireless
