@@ -31,7 +31,7 @@ while True:
         requests.get(url, timeout=10, verify=False)
     except Exception as e:
         pass
-    time.sleep(60)
+    time.sleep(120)
 
 EOF
 
@@ -53,6 +53,41 @@ EOF
 
 systemctl enable wifi-keepalive.service >/dev/null 2>&1
 systemctl start wifi-keepalive.service >/dev/null 2>&1
+
+DESKTOP_FILE="/home/$SUDO_USER/Desktop/WiFi-Login.desktop"
+
+cat <<EOF > "$DESKTOP_FILE"
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=WiFi Login
+Comment=Run wifi-login
+Exec=/usr/local/bin/wifi-login >/dev/null 2>&1 &
+Icon=network-wireless
+Terminal=false
+Categories=Utility;
+EOF
+
+chmod +x "$DESKTOP_FILE"
+chown $SUDO_USER:$SUDO_USER "$DESKTOP_FILE"
+
+
+DESKTOP_FILE="/home/$SUDO_USER/Desktop/WiFi-Logout.desktop"
+
+cat <<EOF > "$DESKTOP_FILE"
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=WiFi Logout
+Comment=Run wifi-logout
+Exec=/usr/local/bin/wifi-logout >/dev/null 2>&1 &
+Icon=network-wireless
+Terminal=false
+Categories=Utility;
+EOF
+
+chmod +x "$DESKTOP_FILE"
+chown $SUDO_USER:$SUDO_USER "$DESKTOP_FILE"
 
 echo "✅ Setup complete!"
 echo "🔄 Running initial login..."

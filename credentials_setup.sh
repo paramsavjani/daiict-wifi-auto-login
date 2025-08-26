@@ -7,6 +7,9 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 CRED_FILE="/etc/wifi-auth/credentials.txt"
+CRED_DIR="/etc/wifi-auth"
+
+mkdir -p "$CRED_DIR"
 
 if [ -f "$CRED_FILE" ]; then
   OLD_USERNAME=$(head -n 1 "$CRED_FILE")
@@ -20,9 +23,7 @@ if [ -f "$CRED_FILE" ]; then
       read -p "Enter your college WiFi username: " USERNAME
       read -s -p "Enter your password: " PASSWORD
       echo
-      mkdir -p /etc/wifi-auth
       echo -e "$USERNAME\n$PASSWORD" > "$CRED_FILE"
-      chmod 600 "$CRED_FILE"
       echo "🔑 Credentials updated."
       ;;
   esac
@@ -30,8 +31,9 @@ else
   read -p "Enter your college WiFi username: " USERNAME
   read -s -p "Enter your password: " PASSWORD
   echo
-  mkdir -p /etc/wifi-auth
   echo -e "$USERNAME\n$PASSWORD" > "$CRED_FILE"
-  chmod 600 "$CRED_FILE"
   echo "🔑 Credentials saved."
 fi
+
+chmod 644 "$CRED_FILE"
+chmod 755 "$CRED_DIR"

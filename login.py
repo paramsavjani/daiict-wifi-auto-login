@@ -7,11 +7,6 @@ import xml.etree.ElementTree as ET
 warnings.filterwarnings("ignore")
 
 
-def is_root():
-    return os.geteuid() == 0
-
-
-
 def get_gui_user():
     try:
         out = subprocess.check_output(["who"], text=True).splitlines()
@@ -88,9 +83,6 @@ def parse_message(xml_data, username):
 
 
 def do_login(username, password):
-    if not is_root():
-        print("ERROR: Script must be run as root.")
-        return 1
 
     wifi = get_connected_wifi()
     if wifi != "DA_Public":
