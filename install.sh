@@ -31,7 +31,7 @@ while True:
         requests.get(url, timeout=10, verify=False)
     except Exception as e:
         pass
-    time.sleep(60)
+    time.sleep(120)
 
 EOF
 

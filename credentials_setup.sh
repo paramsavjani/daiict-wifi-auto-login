@@ -22,7 +22,6 @@ if [ -f "$CRED_FILE" ]; then
       echo
       mkdir -p /etc/wifi-auth
       echo -e "$USERNAME\n$PASSWORD" > "$CRED_FILE"
-      chmod 600 "$CRED_FILE"
       echo "🔑 Credentials updated."
       ;;
   esac
@@ -32,6 +31,5 @@ else
   echo
   mkdir -p /etc/wifi-auth
   echo -e "$USERNAME\n$PASSWORD" > "$CRED_FILE"
-  chmod 600 "$CRED_FILE"
   echo "🔑 Credentials saved."
 fi

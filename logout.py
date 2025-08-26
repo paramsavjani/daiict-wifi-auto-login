@@ -5,9 +5,6 @@ import requests
 import warnings
 warnings.filterwarnings("ignore")
 
-def is_root():
-    return os.geteuid() == 0
-
 def get_gui_user():
     try:
         out = subprocess.check_output(["who"], text=True).splitlines()
@@ -66,9 +63,6 @@ def get_connected_wifi():
     return None
 
 def do_logout(username):
-    if not is_root():
-        print("ERROR: Script must be run as root.")
-        return 1
 
     wifi = get_connected_wifi()
     if wifi != "DA_Public":

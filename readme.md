@@ -37,7 +37,7 @@ For **Debian/Ubuntu**:
 
 ```bash
 sudo apt update
-sudo apt install python3-pip -y
+sudo apt install python3-pip libnotify-bin -y
 pip3 install requests
 ```
 
