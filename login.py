@@ -8,6 +8,39 @@ warnings.filterwarnings("ignore")
 
 
 def get_gui_user():
+    # Try loginctl first (systemd way, works better for services)
+    # Format: SESSION UID USER SEAT TTY
+    fallback_user = None
+    try:
+        out = subprocess.check_output(["loginctl", "list-sessions", "--no-legend"], text=True)
+        for line in out.splitlines():
+            parts = line.split()
+            if len(parts) >= 3:
+                session_id = parts[0]
+                username = parts[2]  # Third column is the username
+                if username and username != "root":
+                    # Check if session is graphical (x11 or wayland)
+                    try:
+                        session_type = subprocess.check_output(
+                            ["loginctl", "show-session", session_id, "-p", "Type", "--value"],
+                            text=True, stderr=subprocess.DEVNULL
+                        ).strip()
+                        if session_type in ["x11", "wayland"]:
+                            return username
+                        # Keep first non-root user as fallback
+                        if not fallback_user:
+                            fallback_user = username
+                    except Exception:
+                        # If we can't check type, keep as fallback
+                        if not fallback_user:
+                            fallback_user = username
+        # Return fallback user if we found one but couldn't verify session type
+        if fallback_user:
+            return fallback_user
+    except Exception:
+        pass
+    
+    # Fallback to 'who' command
     try:
         out = subprocess.check_output(["who"], text=True).splitlines()
         for line in out:
@@ -16,6 +49,19 @@ def get_gui_user():
                 return parts[0]
     except Exception:
         pass
+    
+    # Fallback: check for users with X11/Wayland display
+    try:
+        for user_dir in os.listdir("/home"):
+            user_path = f"/home/{user_dir}"
+            if os.path.isdir(user_path):
+                # Check for .Xauthority or active display
+                xauth = os.path.join(user_path, ".Xauthority")
+                if os.path.exists(xauth):
+                    return user_dir
+    except Exception:
+        pass
+    
     return None
 
 def notify_user(title, message):
