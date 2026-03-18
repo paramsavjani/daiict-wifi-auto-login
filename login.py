@@ -128,12 +128,16 @@ def parse_message(xml_data, username):
         return "Invalid response format."
 
 
-def do_login(username, password):
-
+def do_login(username, password, silent=False):
+    """
+    Log in to DA_Public captive portal.
+    silent=True: no desktop notifications, quiet when not on DA_Public (for keep-alive service).
+    """
     wifi = get_connected_wifi()
     if wifi != "DA_Public":
-        print("ERROR: Not connected to DA_Public Wi-Fi.")
-        return 1
+        if not silent:
+            print("ERROR: Not connected to DA_Public Wi-Fi.")
+        return 0 if silent else 1
 
     url = "https://dafirewall.daiict.ac.in:8090/httpclient.html"
     payload = {
@@ -147,11 +151,14 @@ def do_login(username, password):
     try:
         response = requests.post(url, data=payload, verify=False)
         if response.status_code == 200:
-            message = parse_message(response.text,username)
-            notify_user("DAICT Wi-Fi Login", message)
-        else:
+            if not silent:
+                message = parse_message(response.text, username)
+                notify_user("DAICT Wi-Fi Login", message)
+            return 0
+        if not silent:
             print(f"HTTP Error: {response.status_code}")
-            return 1
+        return 1
     except Exception as e:
-        print(f"Login error: {e}")
+        if not silent:
+            print(f"Login error: {e}")
         return 1

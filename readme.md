@@ -70,10 +70,12 @@ During setup:
 
 | File / Service            | Purpose |
 |---------------------------|---------|
-| `login.py`               | Logs into DA_Public on connect |
+| `login.py`               | Logs into DA_Public (`do_login`; used by wifi-login + keepalive) |
+| `keepalive.py`           | Installed as `wifi-keepalive.py`; calls `do_login(..., silent=True)` on a timer |
 | `logout.py`              | Logs out before shutdown/reboot |
 | `wifi-login.service`     | Runs login script after network connection |
 | `wifi-logout.service`    | Runs logout script before shutdown |
+| `wifi-keepalive.service` | Every **25s** runs the same login (`do_login`) as manual login — no separate `/live` ping |
 | `/etc/wifi-auth/credentials.txt` | Stores encrypted credentials (root-only access) |
 
 ---
@@ -91,6 +93,8 @@ Manually log out:
 ```bash
 sudo wifi-logout
 ```
+
+**If you already installed an older version** (keep-alive was every 2 minutes), run `sudo bash install.sh` again so `/usr/local/bin/wifi-keepalive.py` picks up the faster interval. To tune interval, edit `KEEPALIVE_INTERVAL_SEC` in `keepalive.py` (repo) or `/usr/local/bin/wifi-keepalive.py` after install.
 
 ---
 
