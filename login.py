@@ -3,6 +3,7 @@ import subprocess
 import requests
 import warnings
 import xml.etree.ElementTree as ET
+import time
 
 warnings.filterwarnings("ignore")
 
@@ -128,6 +129,17 @@ def parse_message(xml_data, username):
         return "Invalid response format."
 
 
+def parse_live_ack(xml_data):
+    try:
+        root = ET.fromstring(xml_data)
+        ack_node = root.find("ack")
+        if ack_node is None or ack_node.text is None:
+            return False
+        return ack_node.text.strip().lower() == "ack"
+    except Exception:
+        return False
+
+
 def do_login(username, password, silent=False):
     """
     Log in to DA_Public captive portal.
@@ -139,21 +151,33 @@ def do_login(username, password, silent=False):
             print("ERROR: Not connected to DA_Public Wi-Fi.")
         return 0 if silent else 1
 
-    url = "https://dafirewall.daiict.ac.in:8090/httpclient.html"
-    payload = {
-        "mode": "191",
-        "username": username,
-        "password": password,
-        "a": "1663147780495",
-        "producttype": "0",
-    }
-
     try:
+        if silent:
+            # Keep-alive ping endpoint (no password in request).
+            keep_alive_url = "https://dafirewall.daiict.ac.in:8090/live"
+            keep_alive_params = {
+                "mode": "192",
+                "username": username,
+                "a": str(int(time.time() * 1000)),
+                "producttype": "0",
+            }
+            response = requests.get(keep_alive_url, params=keep_alive_params, verify=False)
+            if response.status_code == 200 and parse_live_ack(response.text):
+                return 0
+            return 1
+
+        url = "https://dafirewall.daiict.ac.in:8090/httpclient.html"
+        payload = {
+            "mode": "191",
+            "username": username,
+            "password": password,
+            "a": "1775463203310",
+            "producttype": "0",
+        }
         response = requests.post(url, data=payload, verify=False)
         if response.status_code == 200:
-            if not silent:
-                message = parse_message(response.text, username)
-                notify_user("DAICT Wi-Fi Login", message)
+            message = parse_message(response.text, username)
+            notify_user("DAICT Wi-Fi Login", message)
             return 0
         if not silent:
             print(f"HTTP Error: {response.status_code}")
